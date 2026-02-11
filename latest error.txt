@@ -1,8 +1,12 @@
 face-reco/
 │
-├── images/
-├── main.py
+├── main_drive.py
+├── drive_auth.py
+├── drive_fetch.py
+├── drive_metadata.py
 ├── face_engine.py
 ├── face_store.py
 ├── known_faces.json
-└── processed_images.json   ← NEW
+├── processed_drive_files.json
+├── videos_found.json
+└── credentials.json

@@ -1,6 +1,7 @@
 from insightface.app import FaceAnalysis
 import numpy as np
 
+
 class FaceEngine:
     def __init__(self):
         self.app = FaceAnalysis(providers=["CPUExecutionProvider"])
@@ -16,13 +17,13 @@ class FaceEngine:
         best_match = None
         best_score = 0
 
-        for name, embeddings in known_faces.items():
-            for known_embedding in embeddings:
+        for canonical, info in known_faces.items():
+            for known_embedding in info["embeddings"]:
                 score = self.cosine_similarity(embedding, known_embedding)
 
                 if score > best_score:
                     best_score = score
-                    best_match = name
+                    best_match = canonical
 
         if best_score > threshold:
             return best_match
