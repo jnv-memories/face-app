@@ -2,16 +2,17 @@ import json
 import os
 import numpy as np
 
-FILE_NAME = "known_faces.json"
+FACES_FILE = "known_faces.json"
+PROCESSED_FILE = "processed_images.json"
+
 
 def load_faces():
-    if not os.path.exists(FILE_NAME):
+    if not os.path.exists(FACES_FILE):
         return {}
 
-    with open(FILE_NAME, "r") as f:
+    with open(FACES_FILE, "r") as f:
         data = json.load(f)
 
-    # convert lists back to numpy arrays
     for name in data:
         data[name] = [np.array(e) for e in data[name]]
 
@@ -23,5 +24,18 @@ def save_faces(face_dict):
     for name, embeddings in face_dict.items():
         serializable[name] = [e.tolist() for e in embeddings]
 
-    with open(FILE_NAME, "w") as f:
-        json.dump(serializable, f, indent=2)
+    with open(FACES_FILE, "w") as f:
+        json.dump(serializable, f)
+
+
+def load_processed():
+    if not os.path.exists(PROCESSED_FILE):
+        return {}
+
+    with open(PROCESSED_FILE, "r") as f:
+        return json.load(f)
+
+
+def save_processed(data):
+    with open(PROCESSED_FILE, "w") as f:
+        json.dump(data, f, indent=2)

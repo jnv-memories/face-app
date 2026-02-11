@@ -1,8 +1,8 @@
 face-reco/
 │
-├── venv/
-├── images/                ← put test photos here
-├── main.py                ← main indexing program
-├── face_engine.py         ← face detection & matching logic
-├── face_store.py          ← save/load known faces
-└── known_faces.json       ← auto-created
+├── images/
+├── main.py
+├── face_engine.py
+├── face_store.py
+├── known_faces.json
+└── processed_images.json   ← NEW

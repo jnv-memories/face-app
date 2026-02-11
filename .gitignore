@@ -1,0 +1,5 @@
+venv/
+known_faces.json
+credentials.json
+images/
+processed_images.json

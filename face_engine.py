@@ -9,14 +9,22 @@ class FaceEngine:
     def detect_faces(self, img):
         return self.app.get(img)
 
-    def match_face(self, embedding, known_faces, threshold=0.5):
+    def cosine_similarity(self, a, b):
+        return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
+
+    def match_face(self, embedding, known_faces, threshold=0.65):
+        best_match = None
+        best_score = 0
+
         for name, embeddings in known_faces.items():
             for known_embedding in embeddings:
-                similarity = np.dot(embedding, known_embedding) / (
-                    np.linalg.norm(embedding) * np.linalg.norm(known_embedding)
-                )
+                score = self.cosine_similarity(embedding, known_embedding)
 
-                if similarity > (1 - threshold):
-                    return name
+                if score > best_score:
+                    best_score = score
+                    best_match = name
+
+        if best_score > threshold:
+            return best_match
 
         return None
