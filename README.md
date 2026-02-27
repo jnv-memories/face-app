@@ -1,3 +1,10 @@
+# Acknowledgement
+Aur bkl vaibhav dhanyavad ye kaam karne ke liye. ye setup guide nahi hai setup guide ke liye mujhse hi contact karna parega. 
+Niche ka content AI generated hai aur mera man nahi kar rha pura parne ka to koi garbar lage to mujhe contact kare. 
+Thanking you
+Your father
+Aayush
+
 # Face Naming Guide
 
 This document explains how naming works in the project. It is meant for
