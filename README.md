@@ -5,6 +5,17 @@ Thanking you
 Your father
 Aayush
 
+#Setup
+After installing make sure file structure should look like as shown in file structure.txt . If you are using virtual environment in python then the venv\ will appear else ut will not be shown. Also if extra files are there just ignore them. After installing requirements.txt run:
+
+       "python main_drive.py"
+       
+then choose google account 2nd for test and put folder id:
+
+    1TSSe_bZ718tLbJQmhAUUAXk-95PuyYM1
+
+An image in another window should open. the green box denotes the face program is asking for name. If you don't know name simply name it unknown. and other naming guide is below please read it throughly. If there's any confusion just press ctrl+C and sleep we will talk tomorrow. Good Knight.
+
 # Face Naming Guide
 
 This document explains how naming works in the project. It is meant for
