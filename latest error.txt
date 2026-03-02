@@ -1,4 +1,9 @@
-face-reco/
+face-rico/
+│
+├── credentials.json
+├── known_faces.json
+├── processed_drive_files.json
+├── token_drive_1.pickle (optional)
 │
 ├── main_drive.py
 ├── drive_auth.py
@@ -6,7 +11,5 @@ face-reco/
 ├── drive_metadata.py
 ├── face_engine.py
 ├── face_store.py
-├── known_faces.json
-├── processed_drive_files.json
-├── videos_found.json
-└── credentials.json
+│
+└── venv/
