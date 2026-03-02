@@ -15,8 +15,10 @@ then choose google account 2nd for test and put folder id:
     1TSSe_bZ718tLbJQmhAUUAXk-95PuyYM1
 
 An image in another window should open. the green box denotes the face program is asking for name.
-If you don't know name read the line 166 in the main_drive.py.
-Attention please reas that line 166 in main_drive.py.
+If you don't know name read the line 166 in the main_drive.py:
+           
+     Attention please read that line 166 in main_drive.py.
+     
 And other naming guide is below please read it throughly. If there's any confusion just press ctrl+C and sleep we will talk tomorrow. Good Knight.
 
 # Face Naming Guide
