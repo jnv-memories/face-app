@@ -1,10 +1,8 @@
 .gitignore
 venv/
-known_faces.json
-credentials.json
+*.json
 images/
 processed_images.json
 videos_found.json
-token.pickle
 processed_drive_files.json
-token_drive_2.pickle
+*.pickle
