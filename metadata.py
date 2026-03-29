@@ -51,7 +51,7 @@ def extract_people(app_props):
     if not app_props:
         return []
 
-    people_str = app_props.get("people", "")
+    people_str = app_props.get("d","")
 
     if not people_str:
         return []

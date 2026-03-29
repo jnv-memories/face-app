@@ -7,7 +7,7 @@ def list_files_in_folder(service, folder_id):
 
     results = service.files().list(
         q=query,
-        fields="files(id, name, mimeType)"
+        fields="files(id, name, mimeType,appProperties)"
     ).execute()
 
     return results.get('files', [])

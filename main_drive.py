@@ -89,7 +89,18 @@ def build_metadata_string(canonicals, known_faces):
         return list(set(full_data))
 
 
-def main():
+def mark_file_done(service, file_id):
+    service.files().update(
+        fileId=file_id,
+        body={
+            "appProperties": {
+                "d": "1"
+            }
+        }
+    ).execute()
+
+
+def normal():
     print("\nSelect Drive Account:")
     print("1. Drive 1")
     print("2. Drive 2")
@@ -117,6 +128,10 @@ def main():
         name = file["name"]
         mime = file["mimeType"]
 
+       
+        if file.get("appProperties", {}).get("d") == "1":
+            continue
+
         if file_id in processed:
             continue
 
@@ -141,6 +156,8 @@ def main():
             if len(faces) == 0:
                 processed[file_id] = []
                 save_processed(processed)
+
+                mark_file_done(service, file_id)
                 continue
 
             canonical_people = []
@@ -231,11 +248,25 @@ def main():
             processed[file_id] = metadata_people
             save_processed(processed)
 
+            mark_file_done(service, file_id)
+
         except Exception as e:
             print(f"Error processing {name}: {e}")
             continue
 
     print("\nFolder indexing complete.")
+
+
+def main():
+    print("\nSelect options:")
+    print("1. ignored version (fast)")
+    print("2. normal version (medium)")
+    print("3. name the left files (slow)")
+
+    choice = input("Enter choice (1-4): ").strip()
+    match choice:
+        case "1":
+            normal()
 
 
 if __name__ == "__main__":
