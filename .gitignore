@@ -6,3 +6,4 @@ processed_images.json
 videos_found.json
 processed_drive_files.json
 *.pickle
+__pycache__
