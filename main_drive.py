@@ -162,6 +162,19 @@ def main():
                         "Enter canonical full name (comma aliases allowed): "
                     ).strip()
 
+                    '''
+                    sun bhai me phone use kar rha hu aur mene just ye chiz realize ki. iss niche wale block ko cide me add
+                    kar dena bina aur kuch remove kiye. mobile me mujhe correct indentation ka pata nahi
+                    chal rha to error na dede islie sab mene comment kiya hai ise update kardena.
+                    is ki madad se agar koi face ka data add nahi karna to simply tum enter karke use skip kar sakte ho.
+                    dhanyavad!
+                    
+# NEW LOGIC: Skip if empty input
+if user_input == "":
+    print("Skipped this face. No data stored.")
+    continue
+                    '''
+
                     aliases = [n.strip() for n in user_input.split(",")]
                     input_first_name = aliases[0].split()[0].lower()
 
