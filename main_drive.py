@@ -27,12 +27,12 @@ def resize_image(img):
     return img
 
 
+
 def show_face_preview(img, faces, current_index):
     preview = img.copy()
 
     for i, face in enumerate(faces):
-        bbox = face.bbox.astype(int)
-        x1, y1, x2, y2 = bbox
+        x1, y1, x2, y2 = face.bbox.astype(int)
 
         color = (255, 0, 0)
         thickness = 2
@@ -42,17 +42,23 @@ def show_face_preview(img, faces, current_index):
             thickness = 3
 
         cv2.rectangle(preview, (x1, y1), (x2, y2), color, thickness)
+
         cv2.putText(
             preview,
             f"Face {i+1}",
-            (x1, y1 - 10),
+            (x1, max(y1 - 10, 0)),  # prevent negative text position
             cv2.FONT_HERSHEY_SIMPLEX,
             0.7,
             color,
             2,
+            cv2.LINE_AA
         )
 
-    cv2.imshow("Face Indexing - Type name in terminal", preview)
+    # Create window once
+    cv2.namedWindow("Face Preview", cv2.WINDOW_NORMAL)
+
+    cv2.imshow("Face Preview", preview)
+
     cv2.waitKey(1)
 
 

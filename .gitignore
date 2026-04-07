@@ -1,6 +1,9 @@
 .gitignore
 venv/
-*.json
+processed_drive_files.json
+known_faces.json
+folder.json
+credentials.json
 images/
 processed_images.json
 videos_found.json
