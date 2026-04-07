@@ -18,16 +18,7 @@ def get_drive_service(token_path="token_drive_1.pickle"):
 # FETCH FILES FROM DRIVE
 # -------------------------------
 def fetch_files(service, folder_id=None):
-    """
-    Fetch files from Google Drive.
-
-    Args:
-        service: Drive API service
-        folder_id (str): Optional folder ID
-
-    Returns:
-        list: Files list
-    """
+   
     query = "trashed=false"
 
     if folder_id:
@@ -51,7 +42,7 @@ def extract_people(app_props):
     if not app_props:
         return []
 
-    people_str = app_props.get("d","")
+    people_str = app_props.get("people","")
 
     if not people_str:
         return []

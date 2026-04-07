@@ -18,6 +18,29 @@ from face_store import (
 MAX_WIDTH = 800
 AUTO_MERGE_THRESHOLD = 0.79
 
+import json
+import os
+
+def save_to_group_photos(file_id, file_name, metadata_people):
+    """Saves metadata locally when Drive metadata limits are exceeded."""
+    storage_file = "group_photos.json"
+    data = {}
+    
+    if os.path.exists(storage_file):
+        with open(storage_file, "r") as f:
+            try:
+                data = json.load(f)
+            except:
+                data = {}
+
+    data[file_id] = {
+        "name": file_name,
+        "people": metadata_people
+    }
+
+    with open(storage_file, "w") as f:
+        json.dump(data, f, indent=4)
+    print(f"[LOCAL SAVE] Metadata for {file_name} saved to group_photos.json (Drive limit exceeded)")
 
 def resize_image(img):
     height, width = img.shape[:2]
@@ -29,39 +52,36 @@ def resize_image(img):
 
 
 def show_face_preview(img, faces, current_index):
+    """
+    Performance Boosted Preview: 
+    Uses single window initialization and optimized drawing.
+    """
     preview = img.copy()
 
     for i, face in enumerate(faces):
         x1, y1, x2, y2 = face.bbox.astype(int)
-
-        color = (255, 0, 0)
-        thickness = 2
-
-        if i == current_index:
-            color = (0, 255, 0)
-            thickness = 3
+        
+        # Highlight selected face in Green, others in Blue
+        is_selected = (i == current_index)
+        color = (0, 255, 0) if is_selected else (255, 0, 0)
+        thickness = 3 if is_selected else 1
 
         cv2.rectangle(preview, (x1, y1), (x2, y2), color, thickness)
-
+        
+        label = f"Face {i+1}" + (" [Target]" if is_selected else "")
         cv2.putText(
             preview,
-            f"Face {i+1}",
-            (x1, max(y1 - 10, 0)),  # prevent negative text position
+            label,
+            (x1, max(y1 - 10, 20)), 
             cv2.FONT_HERSHEY_SIMPLEX,
-            0.7,
+            0.6,
             color,
             2,
             cv2.LINE_AA
         )
 
-    # Create window once
-    cv2.namedWindow("Face Preview", cv2.WINDOW_NORMAL)
-
     cv2.imshow("Face Preview", preview)
-
     cv2.waitKey(1)
-
-
 def cosine_similarity(a, b):
     return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
 
@@ -105,8 +125,17 @@ def mark_file_done(service, file_id):
         }
     ).execute()
 
-
+def mark_file_exceed(service, file_id):
+    service.files().update(
+        fileId=file_id,
+        body={
+            "appProperties": {
+                "d": "2"
+            }
+        }
+    ).execute()
 def normal():
+    
     print("\nSelect Drive Account:")
     print("1. Drive 1")
     print("2. Drive 2")
@@ -127,6 +156,8 @@ def normal():
     videos = load_videos()
 
     files = list_files_in_folder(service, folder_id)
+        # Initialize Window Once to avoid crashing
+    cv2.namedWindow("Face Preview", cv2.WINDOW_AUTOSIZE)
 
     for file in tqdm(files):
 
@@ -135,11 +166,12 @@ def normal():
         mime = file["mimeType"]
 
        
-        if file.get("appProperties", {}).get("d") == "1":
+        if file.get("appProperties", {}).get("d") in ["1", "2"]:
             continue
 
-        if file_id in processed:
-            continue
+        #if file_id in processed:
+        #    continue  """not necessary now as it now checks directly from drive so you can delete the
+        #     processed_drive_diles.json file """
 
         if "video" in mime:
             videos[file_id] = name
@@ -182,7 +214,8 @@ def normal():
                 else:
                     print("[NEW FACE]")
                     user_input = input(
-                        "Enter canonical full name (comma aliases allowed): "
+                        "Enter canonical full name (comma aliases allowed): \n\
+                        (or press enter to skip)"
                     ).strip()
 
                     if user_input == "":
@@ -249,12 +282,22 @@ def normal():
             canonical_people = list(set(canonical_people))
             metadata_people = build_metadata_string(canonical_people, known_faces)
 
-            write_people_metadata(service, file_id, metadata_people)
+            try:
+                write_people_metadata(service, file_id, metadata_people)
+                mark_file_done(service, file_id)
+            except Exception as e:
+                # Check if the error is the 124-byte limit
+                if "propertyLengthLimitExceeded" in str(e) or "124 bytes" in str(e):
+                    save_to_group_photos(file_id, name, metadata_people)
+                    mark_file_exceed(service, file_id)
+                else:
+                    # Re-raise if it's a different kind of error
+                    raise e
 
             processed[file_id] = metadata_people
             save_processed(processed)
 
-            mark_file_done(service, file_id)
+            
 
         except Exception as e:
             print(f"Error processing {name}: {e}")
@@ -271,7 +314,7 @@ def main():
 
     choice = input("Enter choice (1-4): ").strip()
     match choice:
-        case "1":
+        case "2":
             normal()
 
 
