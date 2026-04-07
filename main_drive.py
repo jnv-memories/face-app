@@ -14,6 +14,9 @@ from face_store import (
     load_videos,
     save_videos,
 )
+#test:
+from fast_unknown_handler import fast_mode, slow_mode
+#----
 
 MAX_WIDTH = 800
 AUTO_MERGE_THRESHOLD = 0.79
@@ -314,8 +317,12 @@ def main():
 
     choice = input("Enter choice (1-4): ").strip()
     match choice:
+        case "1":
+            fast_mode()
         case "2":
             normal()
+        case "3":
+            slow_mode()
 
 
 if __name__ == "__main__":
